@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 const Container = styled.div`
   position: sticky;
@@ -52,9 +53,11 @@ const Navbar = () => {
           <Input placeholder="Search" />
           <i class="fa-solid fa-magnifying-glass" />
         </SearchContainer>
-        <Button>
-          <i class="fa-solid fa-circle-user" /> Sign in
-        </Button>
+        <Link to="signin" style={{ textDecoration: "none" }}>
+          <Button>
+            <i class="fa-solid fa-circle-user" /> Sign in
+          </Button>
+        </Link>
       </Wrapper>
     </Container>
   );

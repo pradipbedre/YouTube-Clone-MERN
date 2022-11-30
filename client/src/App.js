@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styled, { ThemeProvider } from "styled-components";
 import Menu from "./components/Menu";
 import Navbar from "./components/Navbar";
+import Signin from "./pages/Signin";
 import "./App.css";
 import { darkTheme, lightTheme } from "./utils/Theme";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
@@ -32,6 +33,7 @@ const App = () => {
             <Wrapper>
               <Routes>
                 <Route path="/" element={<Home />} />
+                <Route path="signin" element={<Signin />} />
                 <Route path="video">
                   <Route path=":id" element={<Video />} />
                 </Route>
