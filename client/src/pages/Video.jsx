@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import Comments from "../components/Comments";
+import VideoCard from "../components/VideoCard";
 
 const Container = styled.div`
   display: flex;
@@ -139,7 +140,17 @@ const Video = () => {
         <Hr />
         <Comments />
       </Content>
-      <Recommended>Recommended</Recommended>
+      <Recommended>
+        <VideoCard type="sm" />
+        <VideoCard type="sm" />
+        <VideoCard type="sm" />
+        <VideoCard type="sm" />
+        <VideoCard type="sm" />
+        <VideoCard type="sm" />
+        <VideoCard type="sm" />
+        <VideoCard type="sm" />
+        <VideoCard type="sm" />
+      </Recommended>
     </Container>
   );
 };
