@@ -14,6 +14,7 @@ const Wrapper = styled.div`
   padding: 0 20px;
   justify-content: flex-end;
   position: relative;
+  margin-top: 10px;
 `;
 const SearchContainer = styled.div`
   position: absolute;
@@ -45,13 +46,19 @@ const Button = styled.button`
   border-radius: 3px;
 `;
 
-const Navbar = () => {
+const Navbar = ({ darkMode }) => {
   return (
     <Container>
       <Wrapper>
         <SearchContainer>
           <Input placeholder="Search" />
-          <i class="fa-solid fa-magnifying-glass" />
+          <i
+            class={
+              darkMode
+                ? "fa-solid fa-magnifying-glass search-white"
+                : "fa-solid fa-magnifying-glass"
+            }
+          />
         </SearchContainer>
         <Link to="signin" style={{ textDecoration: "none" }}>
           <Button>
