@@ -7,10 +7,13 @@ const UserSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
-    password: {
+    email: {
       type: String,
       required: true,
       unique: true,
+    },
+    password: {
+      type: String,
     },
     img: {
       type: String,
@@ -22,9 +25,13 @@ const UserSchema = new mongoose.Schema(
     subscribedUsers: {
       type: [String],
     },
+    fromGoogle: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );
 
-// what ever name we mention here it will make it plural
-export default mongoose.model("User", UserSchema);
+let User = mongoose.model("User", UserSchema);
+export default User;
