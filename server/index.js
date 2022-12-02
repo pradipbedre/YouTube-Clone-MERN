@@ -8,6 +8,7 @@ import userRoutes from "./routes/users.js";
 import commentRoutes from "./routes/comments.js";
 import videosRoutes from "./routes/videos.js";
 import authRoutes from "./routes/auth.js";
+import cookieParser from "cookie-parser";
 
 // middlewares for express
 dotenv.config();
@@ -32,14 +33,13 @@ app.get("/", (req, res) => {
 });
 
 //Routes
-
+app.use(cookieParser());
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/videos", videosRoutes);
 app.use("/api/comments", commentRoutes);
 
-
-// Specific Error handing using middleware 
+// Specific Error handing using middleware
 app.use((err, req, res, next) => {
   const status = err.status || 500;
   const message = err.message || "something went wrong!";
@@ -48,7 +48,7 @@ app.use((err, req, res, next) => {
     status,
     message,
   });
-})
+});
 
 // Server Listening
 app.listen(port, () => {
