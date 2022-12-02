@@ -7,7 +7,7 @@
 
 ## Tech User
 React, Node.js , Express.js, MongoDb Atlas, Firebase For Storage, 
-JWT Authontication, 
+JWT Authontication, bcryptjs for password
 
 
 ## Features 
@@ -55,5 +55,6 @@ JWT Authontication,
 4. create routes for each entity and define all the methods like create, update, delete, get etc.
 5. create a middleware for authontication and authorization
 6. create a middleware for error handling
+7. create a middleware for validation
 
 
