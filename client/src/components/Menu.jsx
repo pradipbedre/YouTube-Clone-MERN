@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import logo from "../img/Youtube.png";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Container = styled.div`
   flex: 1;
@@ -68,6 +69,8 @@ const Title = styled.div`
 `;
 
 const Menu = ({ darkMode, setDarkMode }) => {
+  const { currentUser } = useSelector((state) => state.user);
+
   return (
     <Container>
       <Wrapper>
@@ -76,10 +79,14 @@ const Menu = ({ darkMode, setDarkMode }) => {
             <Img src={logo} />
           </Logo>
         </Link>
-        <Item>
-          <i class="fa-solid fa-house" />
-          Home
-        </Item>
+
+        <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
+          <Item>
+            <i class="fa-solid fa-house" />
+            Home
+          </Item>
+        </Link>
+
         <Link to="trend" style={{ textDecoration: "none", color: "inherit" }}>
           <Item>
             <i class="fa-regular fa-compass" />
@@ -105,14 +112,19 @@ const Menu = ({ darkMode, setDarkMode }) => {
           History
         </Item>
         <Hr />
-        <Login>
-          Signin in to like video, comment, and subscribe
-          <Link to="signin" style={{ textDecoration: "none" }}>
-            <Button>
-              <i class="fa-solid fa-circle-user" /> Sign in
-            </Button>
-          </Link>
-        </Login>
+
+        {!currentUser && (
+          <>
+            <Login>
+              Signin in to like video, comment, and subscribe
+              <Link to="signin" style={{ textDecoration: "none" }}>
+                <Button>
+                  <i class="fa-solid fa-circle-user" /> Sign in
+                </Button>
+              </Link>
+            </Login>
+          </>
+        )}
         <Title>Best Of Youtube</Title>
         <Item>
           <i class="fa-solid fa-music"></i>

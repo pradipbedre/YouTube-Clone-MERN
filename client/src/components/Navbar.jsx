@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Container = styled.div`
   position: sticky;
@@ -45,8 +46,23 @@ const Button = styled.button`
   cursor: pointer;
   border-radius: 3px;
 `;
+const User = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: ${(props) => props.theme.text};
+  font-weight: 500;
+`;
+
+const Avtar = styled.img`
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: lightgray;
+`;
 
 const Navbar = ({ darkMode }) => {
+  const { currentUser } = useSelector((state) => state.user);
   return (
     <Container>
       <Wrapper>
@@ -60,11 +76,19 @@ const Navbar = ({ darkMode }) => {
             }
           />
         </SearchContainer>
-        <Link to="signin" style={{ textDecoration: "none" }}>
-          <Button>
-            <i class="fa-solid fa-circle-user" /> Sign in
-          </Button>
-        </Link>
+        {currentUser ? (
+          <User>
+            <i class="fa-solid fa-video"></i>
+            <Avtar />
+            {currentUser.name}
+          </User>
+        ) : (
+          <Link to="signin" style={{ textDecoration: "none" }}>
+            <Button>
+              <i class="fa-solid fa-circle-user" /> Sign in
+            </Button>
+          </Link>
+        )}
       </Wrapper>
     </Container>
   );
