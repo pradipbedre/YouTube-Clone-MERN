@@ -32,7 +32,9 @@ const App = () => {
             <Navbar darkMode={darkMode} />
             <Wrapper>
               <Routes>
-                <Route path="/" element={<Home />} />
+                <Route path="/" element={<Home type="random" />} />
+                <Route path="trend" element={<Home type="trend" />} />
+                <Route path="subscription" element={<Home type="sub" />} />
                 <Route path="signin" element={<Signin />} />
                 <Route path="video">
                   <Route path=":id" element={<Video />} />

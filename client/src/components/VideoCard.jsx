@@ -1,6 +1,9 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import { format } from "timeago.js";
+import axios from "axios";
+
 const Container = styled.div`
   width: ${(props) => props.type !== "sm" && "360px"};
 
@@ -48,23 +51,32 @@ const Info = styled.div`
   color: ${(props) => props.theme.textSoft};
 `;
 
-const VideoCard = ({ type }) => {
+const VideoCard = ({ type, video }) => {
+  // fetching video details and send to video card component
+
+  const [channel, setChannel] = useState([]);
+
+  useEffect(() => {
+    const fetchChannel = async () => {
+      const res = await axios.get(`/users/find/${video.userId}`);
+      console.log(res.data);
+      setChannel(res.data);
+    };
+    fetchChannel();
+  }, [video.userId]);
+
   return (
     <Link to="/video/test" style={{ textDecoration: "none" }}>
       <Container type={type}>
-        <Image
-          type={type}
-          src="https://www.simplilearn.com/ice9/free_resources_article_thumb/what_is_image_Processing.jpg"
-        />
+        <Image type={type} src={video.imgUrl} />
         <Details type={type}>
-          <ChannelImage
-            type={type}
-            src="https://cdn.dribbble.com/userupload/3158903/file/original-3f5abe8b99ff4ba4626ddf6660115182.jpg?compress=1&resize=1024x768"
-          />
+          <ChannelImage type={type} src={channel.img} />
           <Texts>
-            <Title>How to make money online?</Title>
-            <ChannelName>Pradip Bedre</ChannelName>
-            <Info>660,908 views . 1 day ago</Info>
+            <Title>{video.title}</Title>
+            <ChannelName>{channel.name}</ChannelName>
+            <Info>
+              {video.views} views .{format(video.createdAt)}
+            </Info>
           </Texts>
         </Details>
       </Container>

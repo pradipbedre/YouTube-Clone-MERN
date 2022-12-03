@@ -80,14 +80,21 @@ const Menu = ({ darkMode, setDarkMode }) => {
           <i class="fa-solid fa-house" />
           Home
         </Item>
-        <Item>
-          <i class="fa-regular fa-compass" />
-          Explore
-        </Item>
-        <Item>
-          <i class="fa-brands fa-youtube" />
-          Subscriptions
-        </Item>
+        <Link to="trend" style={{ textDecoration: "none", color: "inherit" }}>
+          <Item>
+            <i class="fa-regular fa-compass" />
+            Explore
+          </Item>
+        </Link>
+        <Link
+          to="subscription"
+          style={{ textDecoration: "none", color: "inherit" }}
+        >
+          <Item>
+            <i class="fa-brands fa-youtube" />
+            Subscriptions
+          </Item>
+        </Link>
         <Hr />
         <Item>
           <i class="fa-sharp fa-solid fa-record-vinyl"></i>
