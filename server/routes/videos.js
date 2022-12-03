@@ -11,7 +11,7 @@ import {
   trendVideos,
   subVideos,
   getByTag,
-  search
+  search,
 } from "../controllers/video.js";
 
 // Add a video
@@ -29,10 +29,10 @@ router.get("/trend", trendVideos);
 // on home page random videos
 router.get("/random", randomVideos);
 // subscribed channel videos
-router.get("/sub", subVideos);
-// get by tags 
+router.get("/sub", verifyToken, subVideos);
+// get by tags
 router.get("/tags", getByTag);
-// get by title 
+// get by title
 router.get("/search", search);
 
 export default router;

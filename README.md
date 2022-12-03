@@ -47,6 +47,9 @@ JWT Authontication, bcryptjs for password
 ### FrontEnd
 1. import Reactapp with styled-component and react-router-dom 
 2. use FontAwesome for icons 
+3. first add proxy in package.json means your backend url
+4. fetch data from backend and show in frontend using  axios
+5. use timeago.js libraty for to mention how many time ago video uploaded
 
 ### BackEnd
 1. setup basic folder structure for server with models, controllers, and routes 

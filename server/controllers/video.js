@@ -3,6 +3,7 @@ import Video from "../models/video";
 import User from "../models/User";
 
 export const addVideo = async (req, res, next) => {
+  //console.log(req);
   const newVideo = new Video({ userId: req.user.id, ...req.body });
   try {
     const video = await newVideo.save();
@@ -56,7 +57,7 @@ export const getVideo = async (req, res, next) => {
     const video = await Video.findById(req.params.id);
     res.status(200).json(video);
   } catch (error) {
-    next(err);
+    next(error);
   }
 };
 
@@ -72,16 +73,16 @@ export const addView = async (req, res, next) => {
     );
     res.status(200).json(video);
   } catch (error) {
-    next(err);
+    next(error);
   }
 };
 
 export const randomVideos = async (req, res, next) => {
   try {
-    const videos = await Video.aggregate([{ $sample: { size: 1 } }]);
+    const videos = await Video.aggregate([{ $sample: { size: 40 } }]);
     res.status(200).json(videos);
   } catch (error) {
-    next(err);
+    next(error);
   }
 };
 
@@ -90,7 +91,7 @@ export const trendVideos = async (req, res, next) => {
     const video = await Video.find().sort({ views: -1 });
     res.status(200).json(video);
   } catch (error) {
-    next(err);
+    next(error);
   }
 };
 
@@ -100,12 +101,13 @@ export const subVideos = async (req, res, next) => {
     const subscribedChannels = user.subscribedUsers;
 
     const list = await Promise.all(
-      subscribedChannels.map((channelId) => {
-        return Video.find({ userId: channelId });
+      subscribedChannels.map(async (channelId) => {
+        return await Video.find({ userId: channelId });
       })
     );
+
     res.status(200).json(list.flat().sort((a, b) => b.createdAt - a.createdAt));
-  } catch (error) {
+  } catch (err) {
     next(err);
   }
 };
@@ -117,7 +119,7 @@ export const getByTag = async (req, res, next) => {
     const video = await Video.find({ tags: { $in: tags } }).limit(20);
     res.status(200).json(video);
   } catch (error) {
-    next(err);
+    next(error);
   }
 };
 
@@ -129,6 +131,6 @@ export const search = async (req, res, next) => {
     }).limit(20);
     res.status(200).json(video);
   } catch (error) {
-    next(err);
+    next(error);
   }
 };

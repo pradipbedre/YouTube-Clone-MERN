@@ -15,6 +15,7 @@ dotenv.config();
 app.use(express.json());
 app.use(cors());
 
+
 // MongoDB connection
 async function main() {
   await mongoose.connect(process.env.DB_URL);
