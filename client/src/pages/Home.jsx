@@ -9,14 +9,14 @@ const Container = styled.div`
   justify-content: center;
 `;
 
-// fetching video details and send to video card component 
+// fetching video details and send to video card component
 const Home = ({ type }) => {
   const [videos, setVideos] = useState([]);
 
   useEffect(() => {
     const fetchVideos = async () => {
       const res = await axios.get(`/videos/${type}`);
-      console.log(res.data);
+      //  console.log(res.data);
       setVideos(res.data);
     };
     fetchVideos();

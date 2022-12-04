@@ -63,7 +63,7 @@ const Avtar = styled.img`
 
 const Navbar = ({ darkMode }) => {
   const { currentUser } = useSelector((state) => state.user);
-  console.log(currentUser.img)
+  //console.log(currentUser.img)
   return (
     <Container>
       <Wrapper>

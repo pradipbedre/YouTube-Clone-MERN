@@ -1,7 +1,12 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Comments from "../components/Comments";
 import VideoCard from "../components/VideoCard";
+import { useSelector, useDispatch } from "react-redux";
+import { useLocation } from "react-router-dom";
+import axios from "axios";
+import { fetchSuccess } from "../redux/videoSlice";
+import { format } from "timeago.js";
 
 const Container = styled.div`
   display: flex;
@@ -89,13 +94,37 @@ const Hr = styled.hr`
 `;
 
 const Video = () => {
+  const { currentUser } = useSelector((state) => state.user);
+  const { currentVideo } = useSelector((state) => state.video);
+  /* ----------- */
+  const dispatch = useDispatch();
+  const path = useLocation().pathname.split("/")[2];
+  const [channel, setChannel] = useState({});
+
+  /* ------------- */
+
+  useEffect(() => {
+    const fetchVideos = async () => {
+      try {
+        const videoRes = await axios.get(`/videos/find/${path}`);
+        const channelRes = await axios.get(`/users/find/${videoRes.userId}`);
+        console.log("from video: ", videoRes.data);
+
+       
+      } catch (error) {
+        console.log("video error", error);
+      }
+    };
+    fetchVideos();
+  }, [path]);
+
   return (
     <Container>
       <Content>
         <VideoWrapper>
           <iframe
             width="100%"
-            height="360"
+            height="720"
             src="https://www.youtube.com/embed/Lk5IyKDW1XI"
             title="YouTube video player"
             frameborder="0"
@@ -103,12 +132,15 @@ const Video = () => {
             allowfullscreen
           ></iframe>
         </VideoWrapper>
-        <Title>How to make money online?</Title>
+        <Title></Title>
         <Details>
-          <Info>660,908 views . 1 day ago</Info>
+          <Info>
+            {/*   {currentVideo.views} views {format(currentVideo.createdAt)} */}
+          </Info>
           <Buttons>
             <Button>
-              <i class="fa-regular fa-thumbs-up"></i>123
+              <i class="fa-regular fa-thumbs-up"></i>
+              {/* {currentVideo.like?.length} */}
             </Button>
             <Button>
               <i class="fa-regular fa-thumbs-down"></i>Dislike
@@ -124,15 +156,11 @@ const Video = () => {
         <Hr />
         <Channel>
           <ChannelInfo>
-            <Image src="https://cdn.dribbble.com/userupload/3158903/file/original-3f5abe8b99ff4ba4626ddf6660115182.jpg?compress=1&resize=1024x768" />
+            <Image src={channel.img} />
             <ChannelDetails>
-              <ChannelName>Pradip Bedre</ChannelName>
-              <ChannelCounter>200k Subcriber</ChannelCounter>
-              <Description>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit,
-                velit aspernatur sunt saepe assumenda quae dignissimos quos
-                ducimus nulla quam!
-              </Description>
+              <ChannelName>{channel.name}</ChannelName>
+              <ChannelCounter>{channel.subscribers}</ChannelCounter>
+              <Description></Description>
             </ChannelDetails>
           </ChannelInfo>
           <Subscribe>Subscribe</Subscribe>
@@ -140,7 +168,7 @@ const Video = () => {
         <Hr />
         <Comments />
       </Content>
-      <Recommended>
+      {/* <Recommended>
         <VideoCard type="sm" />
         <VideoCard type="sm" />
         <VideoCard type="sm" />
@@ -150,7 +178,7 @@ const Video = () => {
         <VideoCard type="sm" />
         <VideoCard type="sm" />
         <VideoCard type="sm" />
-      </Recommended>
+      </Recommended> */}
     </Container>
   );
 };

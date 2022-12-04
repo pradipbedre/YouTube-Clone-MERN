@@ -59,14 +59,14 @@ const VideoCard = ({ type, video }) => {
   useEffect(() => {
     const fetchChannel = async () => {
       const res = await axios.get(`/users/find/${video.userId}`);
-      console.log(res.data);
+      //console.log(res.data);
       setChannel(res.data);
     };
     fetchChannel();
   }, [video.userId]);
 
   return (
-    <Link to="/video/test" style={{ textDecoration: "none" }}>
+    <Link to={`/video/${video._id}`} style={{ textDecoration: "none" }}>
       <Container type={type}>
         <Image type={type} src={video.imgUrl} />
         <Details type={type}>
