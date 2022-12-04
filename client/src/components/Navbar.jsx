@@ -58,11 +58,12 @@ const Avtar = styled.img`
   width: 30px;
   height: 30px;
   border-radius: 50%;
-  background-color: lightgray;
+  
 `;
 
 const Navbar = ({ darkMode }) => {
   const { currentUser } = useSelector((state) => state.user);
+  console.log(currentUser.img)
   return (
     <Container>
       <Wrapper>
@@ -79,7 +80,7 @@ const Navbar = ({ darkMode }) => {
         {currentUser ? (
           <User>
             <i class="fa-solid fa-video"></i>
-            <Avtar />
+            <Avtar src={currentUser.img}/>
             {currentUser.name}
           </User>
         ) : (

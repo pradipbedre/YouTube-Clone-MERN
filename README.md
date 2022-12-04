@@ -50,6 +50,9 @@ JWT Authontication, bcryptjs for password
 3. first add proxy in package.json means your backend url
 4. fetch data from backend and show in frontend using  axios
 5. use timeago.js libraty for to mention how many time ago video uploaded
+6. use redux for state management
+7. implement user psrsistence using localstorage with redux-parsist libraty
+
 
 ### BackEnd
 1. setup basic folder structure for server with models, controllers, and routes 
