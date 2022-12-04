@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Comments from "../components/Comments";
+import axios from "axios";
 import VideoCard from "../components/VideoCard";
 import { useSelector, useDispatch } from "react-redux";
 import { useLocation } from "react-router-dom";
-import axios from "axios";
 import { fetchSuccess } from "../redux/videoSlice";
 import { format } from "timeago.js";
+
+/* ----------------------------------------------------------------------- */
 
 const Container = styled.div`
   display: flex;
@@ -93,30 +95,15 @@ const Hr = styled.hr`
   margin: 15px 0px;
 `;
 
+/* ----------------------------------------------------------------------- */
+
 const Video = () => {
   const { currentUser } = useSelector((state) => state.user);
   const { currentVideo } = useSelector((state) => state.video);
-  /* ----------- */
+  /* ----------------------------------------------------------------------- */
   const dispatch = useDispatch();
   const path = useLocation().pathname.split("/")[2];
-  const [channel, setChannel] = useState({});
-
-  /* ------------- */
-
-  useEffect(() => {
-    const fetchVideos = async () => {
-      try {
-        const videoRes = await axios.get(`/videos/find/${path}`);
-        const channelRes = await axios.get(`/users/find/${videoRes.userId}`);
-        console.log("from video: ", videoRes.data);
-
-       
-      } catch (error) {
-        console.log("video error", error);
-      }
-    };
-    fetchVideos();
-  }, [path]);
+  /* ----------------------------------------------------------------------- */
 
   return (
     <Container>

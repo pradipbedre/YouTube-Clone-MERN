@@ -7,9 +7,11 @@ import {
   deleteComment,
   getComments,
 } from "../controllers/comment.js";
-
+// add comment
 router.post("/", verifyToken, addComment);
+// delete comment
 router.delete("/:id", verifyToken, deleteComment);
+// get comment
 router.get("/:videoId", verifyToken, getComments);
 
 export default router;

@@ -2,6 +2,7 @@ import { createError } from "../error.js";
 import Video from "../models/video";
 import User from "../models/User";
 
+/* ----------------------------------------------------------------------- */
 export const updateUser = async (req, res, next) => {
   if (req.params.id === req.user.id) {
     try {
@@ -20,7 +21,7 @@ export const updateUser = async (req, res, next) => {
     return next(createError(400, "You can update only your account!"));
   }
 };
-
+/* ----------------------------------------------------------------------- */
 export const deleteUser = async (req, res, next) => {
   if (req.params.id === req.user.id) {
     try {
@@ -33,7 +34,7 @@ export const deleteUser = async (req, res, next) => {
     return next(createError(400, "You can delete only your account!"));
   }
 };
-
+/* ----------------------------------------------------------------------- */
 export const getUser = async (req, res, next) => {
   try {
     const userFound = await User.findById(req.params.id);
@@ -42,7 +43,7 @@ export const getUser = async (req, res, next) => {
     next(error);
   }
 };
-
+/* ----------------------------------------------------------------------- */
 export const subscribeUser = async (req, res, next) => {
   try {
     await User.findByIdAndUpdate(req.params.id, {
@@ -58,7 +59,7 @@ export const subscribeUser = async (req, res, next) => {
     next(error);
   }
 };
-
+/* ----------------------------------------------------------------------- */
 export const unsubscribeUser = async (req, res, next) => {
   try {
     await User.findByIdAndUpdate(req.params.id, {
@@ -74,7 +75,7 @@ export const unsubscribeUser = async (req, res, next) => {
     next(error);
   }
 };
-
+/* ----------------------------------------------------------------------- */
 export const likeVideo = async (req, res, next) => {
   const id = req.user.id;
   const videoId = req.params.videoId;
@@ -89,6 +90,8 @@ export const likeVideo = async (req, res, next) => {
     next(error);
   }
 };
+
+/* ----------------------------------------------------------------------- */
 export const deslikeVideo = async (req, res, next) => {
   const id = req.user.id;
   const videoId = req.params.videoId;

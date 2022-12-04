@@ -2,8 +2,8 @@ import { createError } from "../error";
 import Video from "../models/video";
 import User from "../models/User";
 
+/* ----------------------------------------------------------------------- */
 export const addVideo = async (req, res, next) => {
-  //console.log(req);
   const newVideo = new Video({ userId: req.user.id, ...req.body });
   try {
     const video = await newVideo.save();
@@ -12,7 +12,7 @@ export const addVideo = async (req, res, next) => {
     next(error);
   }
 };
-
+/* ----------------------------------------------------------------------- */
 export const updateVideo = async (req, res, next) => {
   try {
     const video = await Video.findById(req.params.id);
@@ -34,7 +34,7 @@ export const updateVideo = async (req, res, next) => {
     next(error);
   }
 };
-
+/* ----------------------------------------------------------------------- */
 export const deleteVideo = async (req, res, next) => {
   try {
     const video = await Video.findById(req.params.id);
@@ -51,7 +51,7 @@ export const deleteVideo = async (req, res, next) => {
     next(error);
   }
 };
-
+/* ----------------------------------------------------------------------- */
 export const getVideo = async (req, res, next) => {
   try {
     const video = await Video.findById(req.params.id);
@@ -60,7 +60,7 @@ export const getVideo = async (req, res, next) => {
     next(error);
   }
 };
-
+/* ----------------------------------------------------------------------- */
 export const addView = async (req, res, next) => {
   try {
     const video = await Video.findByIdAndUpdate(
@@ -76,7 +76,7 @@ export const addView = async (req, res, next) => {
     next(error);
   }
 };
-
+/* ----------------------------------------------------------------------- */
 export const randomVideos = async (req, res, next) => {
   try {
     const videos = await Video.aggregate([{ $sample: { size: 40 } }]);
@@ -85,7 +85,7 @@ export const randomVideos = async (req, res, next) => {
     next(error);
   }
 };
-
+/* ----------------------------------------------------------------------- */
 export const trendVideos = async (req, res, next) => {
   try {
     const video = await Video.find().sort({ views: -1 });
@@ -94,7 +94,7 @@ export const trendVideos = async (req, res, next) => {
     next(error);
   }
 };
-
+/* ----------------------------------------------------------------------- */
 export const subVideos = async (req, res, next) => {
   try {
     const user = await User.findById(req.user.id);
@@ -111,7 +111,7 @@ export const subVideos = async (req, res, next) => {
     next(err);
   }
 };
-
+/* ----------------------------------------------------------------------- */
 export const getByTag = async (req, res, next) => {
   const tags = req.query.tags.split(",");
   console.log(tags);
@@ -122,7 +122,7 @@ export const getByTag = async (req, res, next) => {
     next(error);
   }
 };
-
+/* ----------------------------------------------------------------------- */
 export const search = async (req, res, next) => {
   const query = req.query.q;
   try {

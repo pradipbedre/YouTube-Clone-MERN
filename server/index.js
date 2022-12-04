@@ -30,7 +30,7 @@ main()
 
 // Default Routes
 app.get("/", (req, res) => {
-  res.send("Hello World! Server Is Running....");
+  res.send("Hello World! Youtube Server Is Running....");
 });
 
 //Routes

@@ -6,6 +6,7 @@ import { loginFailure, loginStart, loginSuccess } from "../redux/userSlice";
 import { auth, provider } from "../firebase";
 import { signInWithPopup } from "firebase/auth";
 
+/* ----------------------------------------------------------------------- */
 const Container = styled.div`
   display: flex;
   align-items: center;
@@ -73,6 +74,7 @@ const Link = styled.div`
   margin-left: 30px;
 `;
 
+/* ----------------------------------------------------------------------- */
 const Signin = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");

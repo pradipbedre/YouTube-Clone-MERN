@@ -2,6 +2,7 @@ import { createError } from "../error";
 import Comment from "../models/comment.js";
 import Video from "../models/video.js";
 
+/* ----------------------------------------------------------------------- */
 export const addComment = async (req, res, next) => {
   const newComment = await Comment({ ...req.body, userId: req.user.id });
   try {
@@ -11,6 +12,8 @@ export const addComment = async (req, res, next) => {
     next(error);
   }
 };
+
+/* ----------------------------------------------------------------------- */
 
 export const deleteComment = async (req, res, next) => {
   try {
@@ -27,6 +30,8 @@ export const deleteComment = async (req, res, next) => {
     next(error);
   }
 };
+
+/* ----------------------------------------------------------------------- */
 
 export const getComments = async (req, res, next) => {
   try {
