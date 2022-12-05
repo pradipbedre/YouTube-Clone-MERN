@@ -4,7 +4,7 @@ import Comments from "../components/Comments";
 import axios from "axios";
 import VideoCard from "../components/VideoCard";
 import { useSelector, useDispatch } from "react-redux";
-import { Await, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { fetchSuccess } from "../redux/videoSlice";
 import { format } from "timeago.js";
 import { like, dislike } from "../redux/videoSlice";
@@ -143,6 +143,7 @@ const Video = () => {
       : await axios.put(`/users/sub/${channel._id}`);
     dispatch(subscription(channel._id));
   };
+  console.log(channel);
 
   return (
     <Container>

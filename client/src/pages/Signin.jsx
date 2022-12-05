@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import { loginFailure, loginStart, loginSuccess } from "../redux/userSlice";
 import { auth, provider } from "../firebase";
 import { signInWithPopup } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
 
 /* ----------------------------------------------------------------------- */
 const Container = styled.div`
@@ -80,6 +81,7 @@ const Signin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handelLogin = async (e) => {
     e.preventDefault();
@@ -91,7 +93,7 @@ const Signin = () => {
         password,
       });
       dispatch(loginSuccess(res.data));
-      console.log(res.data);
+      navigate("/");
     } catch (error) {
       dispatch(loginFailure);
     }
@@ -109,8 +111,8 @@ const Signin = () => {
           })
           .then((res) => {
             dispatch(loginSuccess(res.data));
+            navigate("/");
           });
-        console.log(result);
       })
       .catch((err) => {
         dispatch(loginFailure());
