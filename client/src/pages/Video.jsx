@@ -4,10 +4,11 @@ import Comments from "../components/Comments";
 import axios from "axios";
 import VideoCard from "../components/VideoCard";
 import { useSelector, useDispatch } from "react-redux";
-import { useLocation } from "react-router-dom";
+import { Await, useLocation } from "react-router-dom";
 import { fetchSuccess } from "../redux/videoSlice";
 import { format } from "timeago.js";
-
+import { like, dislike } from "../redux/videoSlice";
+import { subscription } from "../redux/userSlice";
 /* ----------------------------------------------------------------------- */
 
 const Container = styled.div`
@@ -37,11 +38,13 @@ const Buttons = styled.div`
   display: flex;
   gap: 20px;
   color: ${(props) => props.theme.textSoft};
+  pointer: cursor;
 `;
 const Button = styled.div`
   display: flex;
   align-items: center;
   gap: 5px;
+  pointer: cursor;
 `;
 
 const Recommended = styled.div`
@@ -103,7 +106,43 @@ const Video = () => {
   /* ----------------------------------------------------------------------- */
   const dispatch = useDispatch();
   const path = useLocation().pathname.split("/")[2];
+  const [channel, setChannel] = useState();
   /* ----------------------------------------------------------------------- */
+
+  useEffect(() => {
+    const fetchVideos = async () => {
+      try {
+        const videoRes = await axios.get(`/videos/find/${path}`);
+        console.log(videoRes.data.userId);
+        const channelRes = await axios.get(
+          `/users/find/${videoRes.data.userId}`
+        );
+        console.log(channelRes.data);
+        dispatch(fetchSuccess(videoRes.data));
+        setChannel(channelRes.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchVideos();
+  }, [path, dispatch]);
+
+  const handelLike = async () => {
+    await axios.put(`/users/like/${currentVideo._id}`);
+    dispatch(like(currentUser._id));
+  };
+
+  const handelDislike = async () => {
+    await axios.put(`/users/dislike/${currentVideo._id}`);
+    dispatch(dislike(currentUser._id));
+  };
+
+  const handelSubscribe = async () => {
+    currentUser.subscribedUsers.includes(channel._id)
+      ? await axios.put(`/users/unsub/${channel._id}`)
+      : await axios.put(`/users/sub/${channel._id}`);
+    dispatch(subscription(channel._id));
+  };
 
   return (
     <Container>
@@ -119,18 +158,28 @@ const Video = () => {
             allowfullscreen
           ></iframe>
         </VideoWrapper>
-        <Title></Title>
+        <Title>{currentVideo.title}</Title>
         <Details>
           <Info>
-            {/*   {currentVideo.views} views {format(currentVideo.createdAt)} */}
+            {currentVideo.views} . {format(currentVideo.createdAt)}
           </Info>
           <Buttons>
-            <Button>
-              <i class="fa-regular fa-thumbs-up"></i>
-              {/* {currentVideo.like?.length} */}
+            <Button onClick={handelLike}>
+              {currentVideo.likes?.includes(currentUser._id) ? (
+                <i class="fa-solid fa-thumbs-up"></i>
+              ) : (
+                <i class="fa-regular fa-thumbs-up"></i>
+              )}
+
+              {currentVideo.likes?.length}
             </Button>
-            <Button>
-              <i class="fa-regular fa-thumbs-down"></i>Dislike
+            <Button onClick={handelDislike}>
+              {currentVideo.dislikes?.includes(currentUser._id) ? (
+                <i class="fa-solid fa-thumbs-down"></i>
+              ) : (
+                <i class="fa-regular fa-thumbs-down"></i>
+              )}
+              Dislike
             </Button>
             <Button>
               <i class="fa-solid fa-share"></i>Share
@@ -143,14 +192,20 @@ const Video = () => {
         <Hr />
         <Channel>
           <ChannelInfo>
-            <Image src={channel.img} />
+            <Image src={channel && channel.img} />
             <ChannelDetails>
-              <ChannelName>{channel.name}</ChannelName>
-              <ChannelCounter>{channel.subscribers}</ChannelCounter>
-              <Description></Description>
+              <ChannelName>{channel && channel.name}</ChannelName>
+              <ChannelCounter>
+                {channel && channel.subscribedUsers.length} subscribers
+              </ChannelCounter>
+              <Description>{currentVideo.desc}</Description>
             </ChannelDetails>
           </ChannelInfo>
-          <Subscribe>Subscribe</Subscribe>
+          <Subscribe onClick={handelSubscribe}>
+            {currentUser.subscribedUsers?.includes(channel && channel._id)
+              ? "SUBSCRIBED"
+              : "SUBSCRIBE"}
+          </Subscribe>
         </Channel>
         <Hr />
         <Comments />
