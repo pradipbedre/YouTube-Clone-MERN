@@ -18,5 +18,4 @@ const CommentSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-// what ever name we mention here it will make it plural
 export default mongoose.model("Comment", CommentSchema);

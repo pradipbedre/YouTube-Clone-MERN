@@ -1,12 +1,7 @@
 # YouTube-Clone-MERN #
-
-## Access-App:
-
-## Backend:
-
 ## Tech Used:
 
-React, Node.js , Express.js, MongoDb Atlas, Firebase For google auth,
+React, Node.js , Express.js, MongoDb Atlas, Firebase For google auth file storage ,
 JWT Authontication, bcryptjs for password, redux, redux-toolkit.
 
 ## Features
@@ -15,7 +10,7 @@ JWT Authontication, bcryptjs for password, redux, redux-toolkit.
 
 ## Product WorkFlow
 
-## DB Design
+
 
 ### FrontEnd : frontend deployed on netlify.com
 

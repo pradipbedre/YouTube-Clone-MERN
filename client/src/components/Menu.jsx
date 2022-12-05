@@ -1,21 +1,46 @@
 import React from "react";
 import styled from "styled-components";
-import logo from "../img/Youtube.png";
+import LamaTube from "../img/logo.png";
+import HomeIcon from "@mui/icons-material/Home";
+import ExploreOutlinedIcon from "@mui/icons-material/ExploreOutlined";
+import SubscriptionsOutlinedIcon from "@mui/icons-material/SubscriptionsOutlined";
+import VideoLibraryOutlinedIcon from "@mui/icons-material/VideoLibraryOutlined";
+import HistoryOutlinedIcon from "@mui/icons-material/HistoryOutlined";
+import LibraryMusicOutlinedIcon from "@mui/icons-material/LibraryMusicOutlined";
+import SportsEsportsOutlinedIcon from "@mui/icons-material/SportsEsportsOutlined";
+import SportsBasketballOutlinedIcon from "@mui/icons-material/SportsBasketballOutlined";
+import MovieOutlinedIcon from "@mui/icons-material/MovieOutlined";
+import ArticleOutlinedIcon from "@mui/icons-material/ArticleOutlined";
+import LiveTvOutlinedIcon from "@mui/icons-material/LiveTvOutlined";
+import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
+import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
+import FlagOutlinedIcon from "@mui/icons-material/FlagOutlined";
+import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
+import SettingsBrightnessOutlinedIcon from "@mui/icons-material/SettingsBrightnessOutlined";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
-
 const Container = styled.div`
   flex: 1;
-  background-color: ${(props) => props.theme.bgLighter};
+  background-color: ${({ theme }) => theme.bgLighter};
   height: 100vh;
-  color: ${(props) => props.theme.text};
+  color: ${({ theme }) => theme.text};
   font-size: 14px;
   position: sticky;
   top: 0;
 `;
-
 const Wrapper = styled.div`
-  padding: 5px 15px;
+  padding: 18px 26px;
+`;
+const Logo = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-weight: bold;
+  margin-bottom: 25px;
+`;
+
+const Img = styled.img`
+  height: 25px;
 `;
 
 const Item = styled.div`
@@ -23,15 +48,16 @@ const Item = styled.div`
   align-items: center;
   gap: 20px;
   cursor: pointer;
-  padding: 8px 0px;
+  padding: 7.5px 0px;
+
   &:hover {
-    background-color: ${(props) => props.theme.soft};
+    background-color: ${({ theme }) => theme.soft};
   }
 `;
 
 const Hr = styled.hr`
   margin: 15px 0px;
-  border: 0.5px solid ${(props) => props.theme.soft}; ;
+  border: 0.5px solid ${({ theme }) => theme.soft};
 `;
 
 const Login = styled.div``;
@@ -40,28 +66,16 @@ const Button = styled.button`
   background-color: transparent;
   border: 1px solid #3ea6ff;
   color: #3ea6ff;
-  font-weight: 500;
-  margin-top: 5px;
-  margin-bottom: 30px;
-  cursor: pointer;
   border-radius: 3px;
-`;
-
-const Logo = styled.div`
-  display:inline-block:
+  font-weight: 500;
+  margin-top: 10px;
+  cursor: pointer;
+  display: flex;
   align-items: center;
   gap: 5px;
-  font-weight:bold;
-  margin-bottom: 25px;
-  margin-top:10px;
 `;
 
-const Img = styled.img`
-  height: 25px;
-  margin-right: 10px;
-`;
-
-const Title = styled.div`
+const Title = styled.h2`
   font-size: 14px;
   font-weight: 500;
   color: #aaaaaa;
@@ -74,98 +88,98 @@ const Menu = ({ darkMode, setDarkMode }) => {
   return (
     <Container>
       <Wrapper>
-        <Link to="/" style={{ textDecoration: "none" }}>
+        <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
           <Logo>
-            <Img src={logo} />
+            <Img src={LamaTube} />
+            PBTube
           </Logo>
         </Link>
-
         <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
-          <Item>
-            <i class="fa-solid fa-house" />
-            Home
-          </Item>
+        <Item>
+          <HomeIcon />
+          Home
+        </Item>
         </Link>
-
-        <Link to="trend" style={{ textDecoration: "none", color: "inherit" }}>
+        <Link to="trends" style={{ textDecoration: "none", color: "inherit" }}>
           <Item>
-            <i class="fa-regular fa-compass" />
+            <ExploreOutlinedIcon />
             Explore
           </Item>
         </Link>
         <Link
-          to="subscription"
+          to="subscriptions"
           style={{ textDecoration: "none", color: "inherit" }}
         >
           <Item>
-            <i class="fa-brands fa-youtube" />
+            <SubscriptionsOutlinedIcon />
             Subscriptions
           </Item>
         </Link>
         <Hr />
         <Item>
-          <i class="fa-sharp fa-solid fa-record-vinyl"></i>
+          <VideoLibraryOutlinedIcon />
           Library
         </Item>
         <Item>
-          <i class="fa-solid fa-clock-rotate-left"></i>
+          <HistoryOutlinedIcon />
           History
         </Item>
         <Hr />
-
-        {!currentUser && (
+        {!currentUser &&
           <>
             <Login>
-              Signin in to like video, comment, and subscribe
+              Sign in to like videos, comment, and subscribe.
               <Link to="signin" style={{ textDecoration: "none" }}>
                 <Button>
-                  <i class="fa-solid fa-circle-user" /> Sign in
+                  <AccountCircleOutlinedIcon />
+                  SIGN IN
                 </Button>
               </Link>
             </Login>
+            <Hr />
           </>
-        )}
-        <Title>Best Of Youtube</Title>
+        }
+        <Title>BEST OF PBTube</Title>
         <Item>
-          <i class="fa-solid fa-music"></i>
+          <LibraryMusicOutlinedIcon />
           Music
         </Item>
         <Item>
-          <i class="fa-solid fa-medal"></i>
+          <SportsBasketballOutlinedIcon />
           Sports
         </Item>
         <Item>
-          <i class="fa-solid fa-gamepad"></i>
+          <SportsEsportsOutlinedIcon />
           Gaming
         </Item>
         <Item>
-          <i class="fa-solid fa-film"></i>
+          <MovieOutlinedIcon />
           Movies
         </Item>
         <Item>
-          <i class="fa-solid fa-newspaper"></i>
+          <ArticleOutlinedIcon />
           News
         </Item>
         <Item>
-          <i class="fa-sharp fa-solid fa-tv"></i>
+          <LiveTvOutlinedIcon />
           Live
         </Item>
         <Hr />
         <Item>
-          <i class="fa-solid fa-gear"></i>
+          <SettingsOutlinedIcon />
           Settings
         </Item>
         <Item>
-          <i class="fa-regular fa-flag"></i>
+          <FlagOutlinedIcon />
           Report
         </Item>
         <Item>
-          <i class="fa-regular fa-square"></i>
+          <HelpOutlineOutlinedIcon />
           Help
         </Item>
         <Item onClick={() => setDarkMode(!darkMode)}>
-          <i class="fa-regular fa-lightbulb"></i>
-          {darkMode ? "Dark Mode" : "Light Mode"}
+          <SettingsBrightnessOutlinedIcon />
+          {darkMode ? "Light" : "Dark"} Mode
         </Item>
       </Wrapper>
     </Container>

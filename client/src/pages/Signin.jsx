@@ -1,31 +1,29 @@
-import React, { useState } from "react";
-import styled from "styled-components";
 import axios from "axios";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
+import styled from "styled-components";
 import { loginFailure, loginStart, loginSuccess } from "../redux/userSlice";
 import { auth, provider } from "../firebase";
 import { signInWithPopup } from "firebase/auth";
+import { async } from "@firebase/util";
 import { useNavigate } from "react-router-dom";
-
-/* ----------------------------------------------------------------------- */
 const Container = styled.div`
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: calc(100vh-56px);
-  color: ${(props) => props.theme.text};
-  flex-direction: column;
-  margin-top: 100px;
+  height: calc(100vh - 56px);
+  color: ${({ theme }) => theme.text};
 `;
 
 const Wrapper = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
-  height: calc(100vh-56px);
-  background-color: ${(props) => props.theme.bgLighter};
-  border: 1px solid ${(props) => props.theme.soft};
+  background-color: ${({ theme }) => theme.bgLighter};
+  border: 1px solid ${({ theme }) => theme.soft};
   padding: 20px 50px;
+  gap: 10px;
 `;
 
 const Title = styled.h1`
@@ -38,12 +36,12 @@ const SubTitle = styled.h2`
 `;
 
 const Input = styled.input`
-  border: 1px solid ${(props) => props.theme.soft};
+  border: 1px solid ${({ theme }) => theme.soft};
   border-radius: 3px;
   padding: 10px;
   background-color: transparent;
-  margin: 10px 0;
   width: 100%;
+  color: ${({ theme }) => theme.text};
 `;
 
 const Button = styled.button`
@@ -52,50 +50,41 @@ const Button = styled.button`
   padding: 10px 20px;
   font-weight: 500;
   cursor: pointer;
-  background-color: ${(props) => props.theme.soft};
-  color: ${(props) => props.theme.textSoft};
-  &:hover {
-    background-color: #b9ebc6;
-  }
+  background-color: ${({ theme }) => theme.soft};
+  color: ${({ theme }) => theme.textSoft};
 `;
 
 const More = styled.div`
   display: flex;
-  font-size: 12px;
-  color: ${(props) => props.theme.textSoft};
   margin-top: 10px;
+  font-size: 12px;
+  color: ${({ theme }) => theme.textSoft};
 `;
 
 const Links = styled.div`
-  display: flex;
+  margin-left: 50px;
+`;
+
+const Link = styled.span`
   margin-left: 30px;
 `;
 
-const Link = styled.div`
-  margin-left: 30px;
-`;
-
-/* ----------------------------------------------------------------------- */
-const Signin = () => {
+const SignIn = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
-  const handelLogin = async (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     dispatch(loginStart());
-
     try {
-      const res = await axios.post("/auth/signin", {
-        name,
-        password,
-      });
+      const res = await axios.post("/auth/signin", { name, password });
       dispatch(loginSuccess(res.data));
-      navigate("/");
-    } catch (error) {
-      dispatch(loginFailure);
+      navigate("/")
+    } catch (err) {
+      dispatch(loginFailure());
     }
   };
 
@@ -110,20 +99,24 @@ const Signin = () => {
             img: result.user.photoURL,
           })
           .then((res) => {
+            console.log(res)
             dispatch(loginSuccess(res.data));
-            navigate("/");
+            navigate("/")
           });
       })
-      .catch((err) => {
+      .catch((error) => {
         dispatch(loginFailure());
       });
   };
+
+  //TODO: REGISTER FUNCTIONALITY
+
 
   return (
     <Container>
       <Wrapper>
         <Title>Sign in</Title>
-        <SubTitle>Sign in to your account</SubTitle>
+        <SubTitle>to continue to LamaTube</SubTitle>
         <Input
           placeholder="username"
           onChange={(e) => setName(e.target.value)}
@@ -133,22 +126,21 @@ const Signin = () => {
           placeholder="password"
           onChange={(e) => setPassword(e.target.value)}
         />
-        <Button onClick={handelLogin}>Sign in</Button>
+        <Button onClick={handleLogin}>Sign in</Button>
         <Title>or</Title>
-        <Button onClick={signInWithGoogle}>SignIn With Google</Button>
+        <Button onClick={signInWithGoogle}>Signin with Google</Button>
         <Title>or</Title>
-        <Title>Sign up</Title>
         <Input
           placeholder="username"
           onChange={(e) => setName(e.target.value)}
         />
-        <Input placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
+        <Input placeholder="email" onChange={(e) => setEmail(e.target.value)} />
         <Input
           type="password"
           placeholder="password"
           onChange={(e) => setPassword(e.target.value)}
         />
-        <Button>Sign in</Button>
+        <Button>Sign up</Button>
       </Wrapper>
       <More>
         English(USA)
@@ -162,4 +154,4 @@ const Signin = () => {
   );
 };
 
-export default Signin;
+export default SignIn;

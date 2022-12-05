@@ -1,54 +1,65 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import ThumbUpOutlinedIcon from "@mui/icons-material/ThumbUpOutlined";
+import ThumbDownOffAltOutlinedIcon from "@mui/icons-material/ThumbDownOffAltOutlined";
+import ReplyOutlinedIcon from "@mui/icons-material/ReplyOutlined";
+import AddTaskOutlinedIcon from "@mui/icons-material/AddTaskOutlined";
+import ThumbDownIcon from "@mui/icons-material/ThumbDown";
+import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import Comments from "../components/Comments";
-import axios from "axios";
-import VideoCard from "../components/VideoCard";
-import { useSelector, useDispatch } from "react-redux";
+import Card from "../components/Card";
+import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
-import { fetchSuccess } from "../redux/videoSlice";
+import axios from "axios";
+import { dislike, fetchSuccess, like } from "../redux/videoSlice";
 import { format } from "timeago.js";
-import { like, dislike } from "../redux/videoSlice";
 import { subscription } from "../redux/userSlice";
-/* ----------------------------------------------------------------------- */
+import Recommendation from "../components/Recommendation";
 
 const Container = styled.div`
   display: flex;
   gap: 24px;
 `;
+
 const Content = styled.div`
   flex: 5;
 `;
 const VideoWrapper = styled.div``;
+
 const Title = styled.h1`
   font-size: 18px;
   font-weight: 400;
   margin-top: 20px;
   margin-bottom: 10px;
-  color: ${(props) => props.theme.text};
+  color: ${({ theme }) => theme.text};
 `;
+
 const Details = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
 `;
+
 const Info = styled.span`
-  color: ${(props) => props.theme.text};
+  color: ${({ theme }) => theme.textSoft};
 `;
+
 const Buttons = styled.div`
   display: flex;
   gap: 20px;
-  color: ${(props) => props.theme.textSoft};
-  pointer: cursor;
+  color: ${({ theme }) => theme.text};
 `;
+
 const Button = styled.div`
   display: flex;
   align-items: center;
   gap: 5px;
-  pointer: cursor;
+  cursor: pointer;
 `;
 
-const Recommended = styled.div`
-  flex: 2;
+const Hr = styled.hr`
+  margin: 15px 0px;
+  border: 0.5px solid ${({ theme }) => theme.soft};
 `;
 
 const Channel = styled.div`
@@ -66,162 +77,142 @@ const Image = styled.img`
   height: 50px;
   border-radius: 50%;
 `;
-const ChannelDetails = styled.div`
+
+const ChannelDetail = styled.div`
   display: flex;
   flex-direction: column;
-  color: ${(props) => props.theme.text};
+  color: ${({ theme }) => theme.text};
 `;
+
 const ChannelName = styled.span`
   font-weight: 500;
 `;
+
 const ChannelCounter = styled.span`
   margin-top: 5px;
   margin-bottom: 20px;
-  color: ${(props) => props.theme.textSoft};
-  font-size: 13px;
+  color: ${({ theme }) => theme.textSoft};
+  font-size: 12px;
 `;
+
 const Description = styled.p`
   font-size: 14px;
 `;
+
 const Subscribe = styled.button`
-  background-color: red;
+  background-color: #cc1a00;
+  font-weight: 500;
   color: white;
   border: none;
-  border-radius: 5px;
+  border-radius: 3px;
   height: max-content;
   padding: 10px 20px;
   cursor: pointer;
 `;
 
-const Hr = styled.hr`
-  border: 0.5px, solid ${(props) => props.theme.textSoft};
-  margin: 15px 0px;
+const VideoFrame = styled.video`
+  max-height: 720px;
+  width: 100%;
+  object-fit: cover;
 `;
-
-/* ----------------------------------------------------------------------- */
 
 const Video = () => {
   const { currentUser } = useSelector((state) => state.user);
   const { currentVideo } = useSelector((state) => state.video);
-  /* ----------------------------------------------------------------------- */
   const dispatch = useDispatch();
+
   const path = useLocation().pathname.split("/")[2];
-  const [channel, setChannel] = useState();
-  /* ----------------------------------------------------------------------- */
+
+  const [channel, setChannel] = useState({});
 
   useEffect(() => {
-    const fetchVideos = async () => {
+    const fetchData = async () => {
       try {
         const videoRes = await axios.get(`/videos/find/${path}`);
-        console.log(videoRes.data.userId);
         const channelRes = await axios.get(
           `/users/find/${videoRes.data.userId}`
         );
-        console.log(channelRes.data);
-        dispatch(fetchSuccess(videoRes.data));
         setChannel(channelRes.data);
-      } catch (error) {
-        console.log(error);
-      }
+        dispatch(fetchSuccess(videoRes.data));
+      } catch (err) {}
     };
-    fetchVideos();
+    fetchData();
   }, [path, dispatch]);
 
-  const handelLike = async () => {
+  const handleLike = async () => {
     await axios.put(`/users/like/${currentVideo._id}`);
     dispatch(like(currentUser._id));
   };
-
-  const handelDislike = async () => {
+  const handleDislike = async () => {
     await axios.put(`/users/dislike/${currentVideo._id}`);
     dispatch(dislike(currentUser._id));
   };
 
-  const handelSubscribe = async () => {
+  const handleSub = async () => {
     currentUser.subscribedUsers.includes(channel._id)
       ? await axios.put(`/users/unsub/${channel._id}`)
       : await axios.put(`/users/sub/${channel._id}`);
     dispatch(subscription(channel._id));
   };
-  console.log(channel);
+
+  //TODO: DELETE VIDEO FUNCTIONALITY
 
   return (
     <Container>
       <Content>
         <VideoWrapper>
-          <iframe
-            width="100%"
-            height="720"
-            src="https://www.youtube.com/embed/Lk5IyKDW1XI"
-            title="YouTube video player"
-            frameborder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowfullscreen
-          ></iframe>
+          <VideoFrame src={currentVideo.videoUrl} controls />
         </VideoWrapper>
         <Title>{currentVideo.title}</Title>
         <Details>
           <Info>
-            {currentVideo.views} . {format(currentVideo.createdAt)}
+            {currentVideo.views} views • {format(currentVideo.createdAt)}
           </Info>
           <Buttons>
-            <Button onClick={handelLike}>
-              {currentVideo.likes?.includes(currentUser._id) ? (
-                <i class="fa-solid fa-thumbs-up"></i>
+            <Button onClick={handleLike}>
+              {currentVideo.likes?.includes(currentUser?._id) ? (
+                <ThumbUpIcon />
               ) : (
-                <i class="fa-regular fa-thumbs-up"></i>
-              )}
-
+                <ThumbUpOutlinedIcon />
+              )}{" "}
               {currentVideo.likes?.length}
             </Button>
-            <Button onClick={handelDislike}>
-              {currentVideo.dislikes?.includes(currentUser._id) ? (
-                <i class="fa-solid fa-thumbs-down"></i>
+            <Button onClick={handleDislike}>
+              {currentVideo.dislikes?.includes(currentUser?._id) ? (
+                <ThumbDownIcon />
               ) : (
-                <i class="fa-regular fa-thumbs-down"></i>
-              )}
+                <ThumbDownOffAltOutlinedIcon />
+              )}{" "}
               Dislike
             </Button>
             <Button>
-              <i class="fa-solid fa-share"></i>Share
+              <ReplyOutlinedIcon /> Share
             </Button>
             <Button>
-              <i class="fa-regular fa-floppy-disk"></i>Save
+              <AddTaskOutlinedIcon /> Save
             </Button>
           </Buttons>
         </Details>
         <Hr />
         <Channel>
           <ChannelInfo>
-            <Image src={channel && channel.img} />
-            <ChannelDetails>
-              <ChannelName>{channel && channel.name}</ChannelName>
-              <ChannelCounter>
-                {channel && channel.subscribedUsers.length} subscribers
-              </ChannelCounter>
+            <Image src={channel.img} />
+            <ChannelDetail>
+              <ChannelName>{channel.name}</ChannelName>
+              <ChannelCounter>{channel.subscribers} subscribers</ChannelCounter>
               <Description>{currentVideo.desc}</Description>
-            </ChannelDetails>
+            </ChannelDetail>
           </ChannelInfo>
-          <Subscribe onClick={handelSubscribe}>
-            {currentUser.subscribedUsers?.includes(channel && channel._id)
+          <Subscribe onClick={handleSub}>
+            {currentUser.subscribedUsers?.includes(channel._id)
               ? "SUBSCRIBED"
               : "SUBSCRIBE"}
           </Subscribe>
         </Channel>
         <Hr />
-        <Comments />
+        <Comments videoId={currentVideo._id} />
       </Content>
-      {/* <Recommended>
-        <VideoCard type="sm" />
-        <VideoCard type="sm" />
-        <VideoCard type="sm" />
-        <VideoCard type="sm" />
-        <VideoCard type="sm" />
-        <VideoCard type="sm" />
-        <VideoCard type="sm" />
-        <VideoCard type="sm" />
-        <VideoCard type="sm" />
-      </Recommended> */}
+      <Recommendation tags={currentVideo.tags} />
     </Container>
   );
 };

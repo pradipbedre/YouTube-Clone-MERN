@@ -1,38 +1,19 @@
 import express from "express";
-import verifyToken from "../utils/verifyToken.js";
-const router = express.Router();
-import {
-  addVideo,
-  updateVideo,
-  deleteVideo,
-  getVideo,
-  addView,
-  randomVideos,
-  trendVideos,
-  subVideos,
-  getByTag,
-  search,
-} from "../controllers/video.js";
+import { addVideo, addView, getByTag, getVideo, random, search, sub, trend } from "../controllers/video.js";
+import { verifyToken } from "../verifyToken.js";
 
-// Add a video
-router.post("/", verifyToken, addVideo);
-// update a video
-router.put("/:id", verifyToken, updateVideo);
-// delete a video
-router.delete("/:id", verifyToken, deleteVideo);
-// get a video
-router.get("/find/:id", verifyToken, getVideo);
-// increase views
-router.put("/view/:id", addView);
-// treanding video
-router.get("/trend", trendVideos);
-// on home page random videos
-router.get("/random", randomVideos);
-// subscribed channel videos
-router.get("/sub", verifyToken, subVideos);
-// get by tags
-router.get("/tags", getByTag);
-// get by title
-router.get("/search", search);
+const router = express.Router();
+
+//create a video
+router.post("/", verifyToken, addVideo)
+router.put("/:id", verifyToken, addVideo)
+router.delete("/:id", verifyToken, addVideo)
+router.get("/find/:id", getVideo)
+router.put("/view/:id", addView)
+router.get("/trend", trend)
+router.get("/random", random)
+router.get("/sub",verifyToken, sub)
+router.get("/tags", getByTag)
+router.get("/search", search)
 
 export default router;

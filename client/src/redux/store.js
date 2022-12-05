@@ -12,7 +12,7 @@ import {
   REGISTER,
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
-
+import { PersistGate } from "redux-persist/integration/react";
 
 const persistConfig = {
   key: "root",
@@ -20,10 +20,8 @@ const persistConfig = {
   storage,
 };
 
-const rootReducer = combineReducers({
-  user: userReducer,
-  video: videoReducer,
-});
+const rootReducer = combineReducers({ user: userReducer, video: videoReducer });
+
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({
@@ -36,4 +34,4 @@ export const store = configureStore({
     }),
 });
 
-export const  persistor = persistStore(store)
+export const persistor = persistStore(store)

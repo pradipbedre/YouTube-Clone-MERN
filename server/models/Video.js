@@ -8,19 +8,19 @@ const VideoSchema = new mongoose.Schema(
     },
     title: {
       type: String,
-      require: true,
+      required: true,
     },
     desc: {
       type: String,
-      require: true,
+      required: true,
     },
     imgUrl: {
       type: String,
-      require: true,
+      required: true,
     },
     videoUrl: {
       type: String,
-      require: true,
+      required: true,
     },
     views: {
       type: Number,
@@ -42,5 +42,4 @@ const VideoSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-// what ever name we mention here it will make it plural
 export default mongoose.model("Video", VideoSchema);
